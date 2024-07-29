@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider     = "mysql"
+  provider     = "cockroachdb"
   url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
@@ -49,7 +49,7 @@ model File {
 
 model Message {
   id   String @id @default(cuid())
-  text String @db.Text()
+  text String @db.String()
 
   isUserMessage Boolean
 
