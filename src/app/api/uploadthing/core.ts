@@ -86,10 +86,10 @@ const onUploadComplete = async ({
     });
     await PineconeStore.fromDocuments(pageLevelDocs, embeddings, {
       pineconeConfig: {
-        indexName: "quill",
+        indexName: "AskMyPDF",
         config: {
           apiKey: process.env.PINECONE_API_KEY!,
-        }
+        },
       },
       namespace: createdFile.id,
     });
