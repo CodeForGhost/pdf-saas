@@ -16,6 +16,7 @@ import {
   HelpCircle,
   Minus,
 } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
 
 const Page = () => {
@@ -242,6 +243,18 @@ const Page = () => {
           </TooltipProvider>
         </div>
       </MaxWidthWrapper>
+      <div className="flex flex-row gap-2 items-center justify-center m-3">
+        <p className="text-gray-400 text-[12px] font-medium">POWERED BY</p>
+        <Link target="_blank" href={"https://focaldive.io"}>
+          <Image
+            src='/fd_dark.png'
+            alt='logout'
+            width={100}
+            height={100}
+            className="cursor-pointer"
+          />
+        </Link>
+      </div>
     </>
   )
 }
