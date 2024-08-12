@@ -3,8 +3,8 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 
 import { PDFLoader } from "langchain/document_loaders/fs/pdf";
-import { OpenAIEmbeddings } from "langchain/embeddings/openai";
-import { PineconeStore } from "langchain/vectorstores/pinecone";
+import { OpenAIEmbeddings } from "@langchain/openai";
+import { PineconeStore } from "@langchain/pinecone";
 import { getPineconeClient } from "@/lib/pinecone";
 import { getUserSubscriptionPlan } from "@/lib/stripe";
 import { PLANS } from "@/config/stripe";
@@ -80,20 +80,19 @@ const onUploadComplete = async ({
         },
       });
     }
-
     // vectorize and index entire document
-    const pinecone = await getPineconeClient();
-    const pineconeIndex = pinecone.Index("quill");
-
     const embeddings = new OpenAIEmbeddings({
       openAIApiKey: process.env.OPENAI_API_KEY,
     });
-
     await PineconeStore.fromDocuments(pageLevelDocs, embeddings, {
-      pineconeIndex,
+      pineconeConfig: {
+        indexName: "quill",
+        config: {
+          apiKey: process.env.PINECONE_API_KEY!,
+        }
+      },
       namespace: createdFile.id,
     });
-
     await db.file.update({
       data: {
         uploadStatus: "SUCCESS",
